@@ -1,73 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Binance Redis Sync
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+CryptoSniper2.0 Redis
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+主要用來撈 Binance 合約K線資料到 Redis，因為請求太頻繁會被鎖定，所以用 Redis 來做快取。
 
-## Description
+## 功能特點
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 自動同步 Binance K線資料
+- 使用 Redis 作為快取存儲
+- Docker 容器化部署
+- GitHub Actions 自動部署到 EC2
 
-## Installation
+## 環境要求
 
-```bash
-$ pnpm install
+- Node.js 18+
+- Docker & Docker Compose
+- pnpm
+- Redis
+
+## 開發環境
+
+啟動開發環境
+
+```
+pnpm run dev
 ```
 
-## Running the app
+## 生產環境
 
-```bash
-# development
-$ pnpm run start
+啟動生產環境
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+```
+pnpm run master
 ```
 
-## Test
+## GitHub Actions CI/CD 設定
 
-```bash
-# unit tests
-$ pnpm run test
+### 設置步驟
 
-# e2e tests
-$ pnpm run test:e2e
+0. 先進入 EC2 內將專案 git clone 下來
+1. 在 GitHub 存儲庫中，進入 "Settings" > "Secrets and variables" > "Actions"
+2. 增加以下 secrets
 
-# test coverage
-$ pnpm run test:cov
-```
+   - `EC2_SSH_PRIVATE_KEY`:
+     ```
+     -----BEGIN RSA PRIVATE KEY-----
+     MIIEpAIBAAKCAQEAn4XOc6lV/PxnyhbkZJKRoWbM7O4UE3Wj+Uf5cVhNTbKZuOc4
+     ...（中間內容省略）...
+     NQ7n6KWpV5e4Yt9msN9s6/TJsaving6igyMQrwqRx2A8Yq5Q==
+     -----END RSA PRIVATE KEY-----
+     ```
+   - `EC2_HOST`: `ec2-xx-xx-xx-xx.compute-1.amazonaws.com`
+   - `ENV`
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+3. 在 GitHub 存儲庫中，進入 "Settings" > "Actions" > "General" > "Workflow permissions" 設置為 "Read and write permissions"
