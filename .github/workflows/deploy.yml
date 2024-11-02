@@ -27,7 +27,7 @@ jobs:
             set -x
             export NVM_DIR=\$HOME/.nvm
             [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"
-            cd binance-redis-sync/ &&
+            cd binance-sync-service/ &&
             git pull &&
             echo \"$ENV\" > .env &&
             npm install -g pnpm &&
