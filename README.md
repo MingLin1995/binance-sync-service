@@ -54,3 +54,8 @@ pnpm run master
    - `ENV`
 
 3. 在 GitHub 存儲庫中，進入 "Settings" > "Actions" > "General" > "Workflow permissions" 設置為 "Read and write permissions"
+
+### 取得資料流程
+
+1. 每5分鐘會從 Binance API 取得 標的名稱 & 24小時成交量
+2. 取得資料後，依據成交量大到小排序，存入 Redis

@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
+import { CustomLogger } from '../common/services/logger.service';
 
 @Injectable()
 export class RedisService {
+  private readonly logger = new CustomLogger(RedisService.name);
   private redis: Redis;
 
   constructor() {
-    console.log(
-      process.env.REDIS_HOST,
-      process.env.REDIS_PORT,
-      process.env.REDIS_PASSWORD,
-    );
     this.redis = new Redis({
       host: process.env.REDIS_HOST,
       port: parseInt(process.env.REDIS_PORT),
@@ -21,15 +18,22 @@ export class RedisService {
     });
 
     this.redis.on('error', (err) => {
-      console.error('Redis 連接失敗', err);
+      this.logger.error('Redis connection failed', err.stack);
+    });
+
+    this.redis.on('connect', () => {
+      this.logger.log('Redis connected successfully');
     });
   }
 
-  async saveKlineData(data: any) {
+  async save24hrData(data: any) {
     try {
-      await this.redis.set('KlineData', JSON.stringify(data), 'EX', 86400);
+      const key = 'symbol_quote_volume_data';
+      const serializedData = JSON.stringify(data);
+
+      await this.redis.set(key, serializedData, 'EX', 60 * 30);
     } catch (error) {
-      console.error('儲存 K 線資料失敗', error);
+      this.logger.error('Failed to save 24hr data to Redis', error.stack);
       throw error;
     }
   }
