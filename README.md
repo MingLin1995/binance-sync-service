@@ -2,7 +2,7 @@
 
 CryptoSniper2.0 Redis
 
-主要用來撈 Binance 合約K線資料到 Redis，因為請求太頻繁會被鎖定，所以用 Redis 來做快取。
+主要用來撈 Binance合約 K線資料到 Redis，避免因為請求太頻繁會被鎖定IP，所以用 Redis 來做快取。
 
 ## 功能特點
 
@@ -59,3 +59,4 @@ pnpm run master
 
 1. 每5分鐘會從 Binance API 取得 標的名稱 & 24小時成交量
 2. 取得資料後，依據成交量大到小排序，存入 Redis
+3. 依據不時間週期，定時更新所有標的K線資料(最新的240根)
