@@ -11,7 +11,7 @@ interface TimeInterval {
 @Injectable()
 export class SyncScheduler implements OnModuleInit {
   private readonly logger = new CustomLogger(SyncScheduler.name);
-  private readonly REQUEST_DELAY = 300; // 本地 100/執行100s 150/執行150s  AWS 150/執行85s
+  private readonly REQUEST_DELAY = 450; // 本地 100/執行100s 150/執行150s  AWS 450/執行220s
   private readonly timeIntervals: TimeInterval[] = [
     { interval: '5m', minutes: 5 },
     { interval: '15m', minutes: 15 },
