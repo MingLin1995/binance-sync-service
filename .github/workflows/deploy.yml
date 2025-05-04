@@ -31,8 +31,5 @@ jobs:
             cd binance-sync-service/ &&
             git pull &&
             echo \"$ENV\" > .env &&
-            npm install -g pnpm &&
-            pnpm install &&
-            pnpm run build &&
             pnpm run master
           "
